@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Direction Eleven</title>
+    <style>
+        /* Reset dasar biar rapi */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Background body utama (gelap luxury) */
+            background-color: #1a1a1a;
+            color: white;
+            font-family: sans-serif;
+            overflow: hidden; /* Kunci scroll pas loading biar ga bocor */
+        }
+
+        /* =========================================
+           SIHIR LAYAR LOADING (BAJAK LAUT)
+           ========================================= */
+        #layar-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #111;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out; /* Animasi fade-out pas ngilang */
+        }
+
+        /* Kunci putarannya di sini */
+        .setir-muter {
+            width: 120px;
+            /* Animasi muter 4 detik, kecepatan stabil (linear), tanpa henti (infinite) */
+            animation: putarNahkoda 4s linear infinite; 
+            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5)); /* Efek glowing dikit */
+        }
+
+        @keyframes putarNahkoda {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Teks judul loading */
+        .teks-loading {
+            color: #f59e0b; /* Warna emas/oranye ala harta karun */
+            margin-top: 25px;
+            font-family: 'Courier New', Courier, monospace; /* Font estetik mesin ketik */
+            letter-spacing: 5px;
+            font-weight: bold;
+            animation: kedip 1.5s infinite; /* Efek napas */
+        }
+
+        @keyframes kedip {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* =========================================
+           KONTEN UTAMA WEB (MUNCUL SETELAH LOADING)
+           ========================================= */
+        #konten-utama {
+            display: none; /* Disembunyiin dulu pas awal */
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .judul-konten {
+            color: #f59e0b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="layar-loading">
+        <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Loading Setir" class="setir-muter">
+        <h2 class="teks-loading">ONE DIRECTION ELEVEN</h2>
+    </div>
+
+    <div id="konten-utama">
+        <h1 class="judul-konten">Ahlan Wa Sahlan di One Direction Eleven!</h1>
+        <p>Layar loading bajak lautnya udah berhasil dilewatin.</p>
+        <p style="margin-top: 20px; font-style: italic; color: #888;">(Isi konten web lu selanjutnya tinggal ditaruh di dalam div ini)</p>
+    </div>
+
+    <script>
+        // Simulasi nahan loading 2.5 detik biar animasinya puas dilihat audiens
+        window.addEventListener("load", function() {
+            setTimeout(function() {
+                let loadingScreen = document.getElementById("layar-loading");
+                let kontenUtama = document.getElementById("konten-utama");
+                let bodyElement = document.body;
+                
+                // Efek layarnya ngilang pelan-pelan (fade out)
+                loadingScreen.style.opacity = "0";
+                
+                // Nunggu setengah detik biar transisinya mulus, baru dihancurin total
+                setTimeout(function() {
+                    loadingScreen.style.display = "none";
+                    kontenUtama.style.display = "block"; // Munculin konten asli
+                    bodyElement.style.overflow = "auto"; // Buka gembok scroll-nya
+                }, 500);
+
+            }, 2500); // 2500 milidetik = 2.5 detik
+        });
+    </script>
+
+</body>
+</html>
