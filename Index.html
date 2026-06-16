@@ -6,7 +6,7 @@
     <title>One Direction Eleven</title>
     <style>
         /* =========================================
-           RESET DASAR & ELEMENT UTAMA
+           RESET DASAR & FONT
            ========================================= */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -15,15 +15,44 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #111;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
-            overflow: hidden; /* Kunci scroll biar gak bocor pas loading */
+            overflow: hidden; /* Kunci scroll pas loading */
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* =========================================
-           1. SIHIR LAYAR LOADING (BAJAK LAUT)
+           1. BACKGROUND VIDEO (FULL SCREEN)
+           ========================================= */
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; /* Taruh paling belakang */
+            object-fit: cover;
+            /* Kalau videonya belum jalan, gambar pantai tadi jadi cadangannya */
+            background: url('image_3.png') no-repeat center center/cover;
+        }
+
+        /* Overlay tipis biar teks putih tetep kebaca kalau videonya terlalu terang */
+        .overlay-gelap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3); /* Hitam transparan 30% */
+            z-index: 0;
+        }
+
+        /* =========================================
+           2. LAYAR LOADING (SETIR BAJAK LAUT)
            ========================================= */
         #layar-loading {
             position: fixed;
@@ -31,20 +60,19 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: #111; /* Hitam pekat misterius */
+            background-color: #0b1320; /* Gelap biar loadingnya fokus */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999; /* Tetap di paling depan sebelum loading kelar */
-            transition: opacity 0.6s ease-out; /* Transisi menghilang yang mulus */
+            z-index: 9999;
+            transition: opacity 0.6s ease-out; 
         }
 
-        /* Setir kapal raksasa pesanan Komandan */
         .setir-muter {
-            width: 250px; /* Sesuai request: Ukuran Raksasa! */
+            width: 200px; 
             animation: putarNahkoda 4s linear infinite; 
-            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.4)); /* Efek aura emas */
+            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.6)); 
         }
 
         @keyframes putarNahkoda {
@@ -52,9 +80,8 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Teks loading bawah setir */
         .teks-loading {
-            color: #f59e0b; /* Emas bajak laut */
+            color: #f59e0b; /* Warna emas bajak laut */
             margin-top: 25px;
             font-family: 'Courier New', Courier, monospace;
             letter-spacing: 5px;
@@ -68,157 +95,152 @@
         }
 
         /* =========================================
-           2. HALAMAN UTAMA (UI PANTAI AT-TAALLUM)
+           3. UI HALAMAN UTAMA (GLASSMORPHISM / KACA BLUR)
            ========================================= */
-        .background-container {
-            /* === PENTING: Pake file gambar kustom lu di sini === */
-            background-image: url('image_3.png'); 
-            background-size: cover;
-            background-position: center;
-            width: 100%;
-            height: 100vh;
-            position: relative;
-            opacity: 0; /* Awalnya disembunyiin, nanti di-fade in lewat JS */
+        #konten-utama {
+            opacity: 0; 
             transition: opacity 0.8s ease-in;
-        }
-
-        /* Logo Pojok Kiri Atas */
-        .logo-corner {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
             display: flex;
             flex-direction: column;
-            color: #d4af37; /* Gold mewah */
-            z-index: 10;
-        }
-
-        .logo-title {
-            font-size: 2.2rem;
-            font-weight: bold;
-            letter-spacing: 0.1em;
-        }
-
-        .logo-tagline {
-            font-size: 0.9rem;
-            color: #b59410;
-        }
-
-        /* Wrapper Konten Tengah */
-        .content-wrapper {
-            display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            width: 100%;
+            justify-content: center;
+            flex-grow: 1;
             padding: 2rem;
+            text-align: center;
+            z-index: 1; /* Harus di atas overlay dan video */
+            position: relative;
         }
 
-        /* Kartu Panel Gelap Tengah */
-        .hero-panel {
-            background-color: rgba(0, 0, 0, 0.65); /* Transparan Gelap */
-            backdrop-filter: blur(10px); /* Efek blur di belakang kartu */
-            border-radius: 15px;
-            padding: 4rem;
-            text-align: center;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        /* Header Kiri Atas */
+        .header-top {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Biar teksnya nonjol */
+        }
+
+        .header-logo {
+            width: 35px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .header-title {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Konten Tengah */
+        .center-logo {
+            width: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); 
+        }
+
+        .main-headline {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.6); /* Bayangan teks biar kebaca jelas */
+        }
+
+        .highlight-text {
+            color: #38bdf8; /* Biru laut terang */
+        }
+
+        .sub-headline {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #f8fafc;
+            max-width: 650px;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* KOTAK KACA TRANSPARAN BLUR (GLASSMORPHISM) */
+        .bottom-card {
+            background: rgba(255, 255, 255, 0.1); /* Putih tipis banget */
+            backdrop-filter: blur(15px); /* EFEK KACA BURAMNYA DI SINI */
+            -webkit-backdrop-filter: blur(15px); /* Buat support browser Safari */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Garis tepi bening */
+            border-radius: 20px; /* Ujungnya dibikin bulat elegan */
+            padding: 2.5rem;
             max-width: 700px;
             width: 100%;
-            z-index: 5;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Bayangan kotak */
         }
 
-        .hero-panel h4.tagline {
+        .card-quote {
             font-size: 1.1rem;
-            text-transform: uppercase;
-            color: #bbb;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.15em;
+            font-style: italic;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
-        .hero-panel h1.main-title {
-            font-size: 3.2rem;
+        .card-author {
             font-weight: bold;
-            margin-bottom: 2rem;
-            letter-spacing: -0.01em;
-        }
-
-        .hero-panel p.description {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #ddd;
-            margin-bottom: 3.5rem;
-        }
-
-        /* Tombol Transparan Efek Kaca Blur (Glassmorphism) */
-        .hero-panel .blur-btn {
-            background-color: rgba(255, 255, 255, 0.15); /* Putih tipis transparan */
-            backdrop-filter: blur(8px); /* Efek blur internal tombol */
-            -webkit-backdrop-filter: blur(8px);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.25); /* Garis tepi tipis biar tegas */
-            border-radius: 50px;
-            padding: 1.2rem 3.5rem;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Efek Interaksi pas Tombol Disentuh/Hover */
-        .hero-panel .blur-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #38bdf8;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
+
+    <video autoplay loop muted playsinline class="video-background">
+        <source src="video-pantai.mp4" type="video/mp4">
+    </video>
+    
+    <div class="overlay-gelap"></div>
 
     <div id="layar-loading">
         <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Loading Setir" class="setir-muter">
         <h2 class="teks-loading">ONE DIRECTION ELEVEN</h2>
     </div>
 
-    <div class="background-container" id="konten-utama">
-        <div class="logo-corner">
-            <span class="logo-title">ATTAALLUM</span>
-            <span class="logo-tagline">Berbagi Kebaikan, Temukan Kedamaian</span>
+    <div id="konten-utama">
+        
+        <div class="header-top">
+            <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Logo" class="header-logo">
+            <span class="header-title">ONE DIRECTION ELEVEN</span>
         </div>
 
-        <main class="content-wrapper">
-            <div class="hero-panel">
-                <h4 class="tagline">BERBAGI KEBAIKAN</h4>
-                <h1 class="main-title">PANTAI AT-TAALLUM</h1>
-                <p class="description">Selamat datang di gerbang surga tropis Anda. Temukan ketenangan dan inspirasi di sini bersama tim One Direction Eleven.</p>
-                <button class="blur-btn">DAFTAR SEKARANG</button>
-            </div>
-        </main>
+        <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Logo Utama" class="center-logo">
+        
+        <h1 class="main-headline">Selamat Datang di <span class="highlight-text">One Direction Eleven</span></h1>
+        
+        <p class="sub-headline">
+            Wadah kolaborasi terpadu untuk mengembangkan kreativitas dan inovasi tanpa batas. 
+            Melangkah bersama menuju masa depan yang lebih terang.
+        </p>
+
+        <div class="bottom-card">
+            <p class="card-quote">"Sebuah perjalanan seribu mil menyeberangi lautan dimulai dengan tarikan jangkar pertama yang penuh keyakinan."</p>
+            <p class="card-author">Kru One Direction Eleven</p>
+        </div>
+
     </div>
 
     <script>
-        // Tunggu sampai seluruh aset (gambar, dll) kelar di-load browser
         window.addEventListener("load", function() {
-            // Kita tahan loading-nya selama 2.5 detik biar animasinya puas dilihat
             setTimeout(function() {
                 let loadingScreen = document.getElementById("layar-loading");
                 let mainContent = document.getElementById("konten-utama");
                 
-                // 1. Mulai lenyapkan layar loading (fade out)
                 loadingScreen.style.opacity = "0";
-                
-                // 2. Munculkan halaman utama (fade in) secara bersamaan
                 mainContent.style.opacity = "1";
                 
-                // 3. Setelah transisi selesai (0.6 detik), hancurkan display loading biar ga ngegembok layar
                 setTimeout(function() {
                     loadingScreen.style.display = "none";
-                    document.body.style.overflow = "auto"; // Buka gembok scroll-nya
+                    document.body.style.overflow = "auto"; 
                 }, 600);
 
-            }, 2500); // 2500 ms = 2.5 Detik tayang animasi setir
+            }, 2500); 
         });
     </script>
 
