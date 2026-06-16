@@ -1,249 +1,335 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>One Direction Eleven</title>
+    <title>One Direction Eleven | ODE11</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         /* =========================================
-           RESET DASAR & FONT
+           SISTEM WARNA & FONT RESMI ODE11
            ========================================= */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --wine-red: #5A1E2A;
+            --wine-dark: #5B1E2D; /* Buat Landing */
+            --ivory: #F8F4EC;
+            --gold: #D4AF37;
+            --soft-gray: #8A6A72;
+            --text-light: #D1D5DB;
+            --white: #FFFFFF;
+            
+            --font-heading: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: white;
-            overflow: hidden; /* Kunci scroll pas loading */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); overflow-x: hidden; background-color: var(--ivory); }
 
         /* =========================================
-           1. BACKGROUND VIDEO (FULL SCREEN)
+           1. HALAMAN PEMBUKA (LANDING PAGE)
            ========================================= */
-        /* =========================================
-   1. BACKGROUND VIDEO (FULL SCREEN TENGAH)
-   ========================================= */
-.video-background {
-    position: fixed;
-    top: 50%;      /* Dorong ke tengah dari atas */
-    left: 50%;     /* Dorong ke tengah dari kiri */
-    min-width: 100vw;
-    min-height: 100vh;
-    width: auto;
-    height: auto;
-    z-index: -1;
-    /* Ini KUNCI UTAMANYA: Mengunci titik pusat video persis di tengah layar */
-    transform: translate(-50%, -50%); 
-    object-fit: contain; 
-}
-
-        /* Overlay tipis biar teks putih tetep kebaca kalau videonya terlalu terang */
-        .overlay-gelap {
+        #landing-page {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.3); /* Hitam transparan 30% */
-            z-index: 0;
-        }
-
-        /* =========================================
-           2. LAYAR LOADING (SETIR BAJAK LAUT)
-           ========================================= */
-        #layar-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #0b1320; /* Gelap biar loadingnya fokus */
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: var(--wine-dark);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.6s ease-out; 
+            transition: opacity 1s ease-in-out, visibility 1s;
         }
 
-        .setir-muter {
-            width: 200px; 
-            animation: putarNahkoda 4s linear infinite; 
-            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.6)); 
+        .landing-content { text-align: center; }
+
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--ivory);
+            margin-bottom: 20px;
         }
 
-        @keyframes putarNahkoda {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .landing-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--ivory);
+            letter-spacing: 4px;
+            margin-bottom: 10px;
         }
 
-        .teks-loading {
-            color: #f59e0b; /* Warna emas bajak laut */
-            margin-top: 25px;
-            font-family: 'Courier New', Courier, monospace;
-            letter-spacing: 5px;
-            font-weight: bold;
-            animation: kedip 1.5s infinite;
+        .landing-tagline {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
         }
 
-        @keyframes kedip {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* =========================================
-           3. UI HALAMAN UTAMA (GLASSMORPHISM / KACA BLUR)
-           ========================================= */
-        #konten-utama {
-            opacity: 0; 
-            transition: opacity 0.8s ease-in;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-            padding: 2rem;
-            text-align: center;
-            z-index: 1; /* Harus di atas overlay dan video */
-            position: relative;
-        }
-
-        /* Header Kiri Atas */
-        .header-top {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Biar teksnya nonjol */
-        }
-
-        .header-logo {
-            width: 35px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-        }
-
-        .header-title {
+        /* Tombol Landing */
+        .btn-voyage {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 15px 40px;
+            font-family: var(--font-body);
             font-size: 1rem;
-            font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.4s ease;
             text-transform: uppercase;
         }
 
-        /* Konten Tengah */
-        .center-logo {
-            width: 120px;
+        .btn-voyage:hover {
+            background-color: var(--gold);
+            color: var(--wine-dark);
+        }
+
+        .accent-line {
+            width: 1px;
+            height: 80px;
+            background-color: var(--gold);
+            margin: 40px auto 0;
+            opacity: 0.5;
+        }
+
+        /* =========================================
+           2. HALAMAN UTAMA (HOME PAGE)
+           ========================================= */
+        #home-page {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in-out;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 8%;
+            background-color: var(--ivory);
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--wine-red);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .nav-links { list-style: none; display: flex; gap: 30px; }
+        
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--wine-red);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links li a:hover { color: var(--gold); }
+
+        /* Hero Section (Tanpa Gambar AI) */
+        .hero {
+            padding: 80px 8%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Di-tengahin karena ga pake gambar di kanan */
+            text-align: center;
+            background-color: var(--ivory);
+        }
+
+        .hero-subtitle {
+            color: var(--wine-red);
+            font-weight: 500;
+            letter-spacing: 3px;
+            font-size: 0.9rem;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.6)); 
+            text-transform: uppercase;
         }
 
-        .main-headline {
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-            margin-bottom: 15px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.6); /* Bayangan teks biar kebaca jelas */
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 4.5rem;
+            color: var(--wine-red);
+            line-height: 1.1;
+            margin-bottom: 25px;
+            max-width: 800px;
         }
 
-        .highlight-text {
-            color: #38bdf8; /* Biru laut terang */
-        }
-
-        .sub-headline {
+        .hero p {
+            color: var(--soft-gray);
             font-size: 1.1rem;
             line-height: 1.6;
-            color: #f8fafc;
-            max-width: 650px;
+            max-width: 600px;
             margin-bottom: 40px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* KOTAK KACA TRANSPARAN BLUR (GLASSMORPHISM) */
-        .bottom-card {
-            background: rgba(255, 255, 255, 0.1); /* Putih tipis banget */
-            backdrop-filter: blur(15px); /* EFEK KACA BURAMNYA DI SINI */
-            -webkit-backdrop-filter: blur(15px); /* Buat support browser Safari */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Garis tepi bening */
-            border-radius: 20px; /* Ujungnya dibikin bulat elegan */
-            padding: 2.5rem;
-            max-width: 700px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Bayangan kotak */
-        }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; }
 
-        .card-quote {
-            font-size: 1.1rem;
-            font-style: italic;
-            color: #ffffff;
-            margin-bottom: 15px;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .card-author {
-            font-weight: bold;
-            color: #38bdf8;
+        /* Tombol Primary */
+        .btn-primary {
+            background-color: var(--wine-red);
+            color: var(--ivory);
+            border: 1px solid var(--wine-red);
+            padding: 15px 35px;
             font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
+
+        .btn-primary:hover { background-color: #4A1721; }
+
+        /* Tombol Secondary */
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--wine-red);
+            border: 1px solid var(--wine-red);
+            padding: 15px 35px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--wine-red);
+            color: var(--ivory);
+        }
+
+        /* Section Journey / Divisi */
+        .journey {
+            padding: 80px 8%;
+            text-align: center;
+            background-color: #FFFDF8;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .journey-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--wine-red);
+            margin-bottom: 15px;
+        }
+
+        .divider {
+            width: 50px; height: 2px;
+            background-color: var(--gold);
+            margin: 0 auto 50px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--wine-red);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-heading);
+            color: var(--wine-red);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--soft-gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
     </style>
 </head>
 <body>
 
-    <video autoplay loop muted playsinline class="video-background">
-        <source src="video-pantai.mp4" type="video/mp4">
-    </video>
-    
-    <div class="overlay-gelap"></div>
-
-    <div id="layar-loading">
-        <img src="setir-bajak-laut.png" alt="Loading Setir" class="setir-muter">
-        <h2 class="teks-loading">ONE DIRECTION ELEVEN</h2>
+    <div id="landing-page">
+        <div class="landing-content">
+            <i class="fa-regular fa-compass logo-icon"></i> 
+            <h1 class="landing-title">ONE DIRECTION ELEVEN</h1>
+            <p class="landing-tagline">Chart Your Direction.</p>
+            <button class="btn-voyage" id="enter-btn">Begin The Voyage &nbsp; <i class="fa-solid fa-arrow-right"></i></button>
+            <div class="accent-line"></div>
+        </div>
     </div>
 
-    <div id="konten-utama">
+    <div id="home-page">
         
-        <div class="header-top">
-            <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Logo" class="header-logo">
-            <span class="header-title">ONE DIRECTION ELEVEN</span>
-        </div>
+        <nav>
+            <div class="nav-logo">
+                <i class="fa-solid fa-anchor" style="color: var(--gold); margin-right: 8px;"></i> ODE11
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Divisions</a></li>
+                <li><a href="#">Bounty Board</a></li> </ul>
+        </nav>
 
-        <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Logo Utama" class="center-logo">
-        
-        <h1 class="main-headline">Selamat Datang di <span class="highlight-text">One Direction Eleven</span></h1>
-        
-        <p class="sub-headline">
-            Wadah kolaborasi terpadu untuk mengembangkan kreativitas dan inovasi tanpa batas. 
-            Melangkah bersama menuju masa depan yang lebih terang.
-        </p>
+        <header class="hero">
+            <p class="hero-subtitle">One Direction Eleven</p>
+            <h1>Discover Your Direction.</h1>
+            <p>A community where students grow through leadership, sports, arts, and meaningful experiences. Build your legacy with the crew.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary">JOIN THE CREW &nbsp; &rarr;</button>
+                <button class="btn-secondary">EXPLORE DIVISIONS</button>
+            </div>
+        </header>
 
-        <div class="bottom-card">
-            <p class="card-quote">"Sebuah perjalanan seribu mil menyeberangi lautan dimulai dengan tarikan jangkar pertama yang penuh keyakinan."</p>
-            <p class="card-author">Kru One Direction Eleven</p>
-        </div>
+        <section class="journey">
+            <h2 class="journey-title">Built on Purpose. Driven by People.</h2>
+            <div class="divider"></div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-users"></i>
+                    <h3>Leadership</h3>
+                    <p>Empowering individuals to lead with integrity and vision.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-futbol"></i>
+                    <h3>Sports</h3>
+                    <p>Building strength, discipline, and team spirit.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Arts</h3>
+                    <p>Inspiring creativity and celebrating expression.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-star"></i>
+                    <h3>Experiences</h3>
+                    <p>Creating moments that shape growth and memories.</p>
+                </div>
+            </div>
+        </section>
 
     </div>
 
     <script>
-        window.addEventListener("load", function() {
-            setTimeout(function() {
-                let loadingScreen = document.getElementById("layar-loading");
-                let mainContent = document.getElementById("konten-utama");
-                
-                loadingScreen.style.opacity = "0";
-                mainContent.style.opacity = "1";
-                
-                setTimeout(function() {
-                    loadingScreen.style.display = "none";
-                    document.body.style.overflow = "auto"; 
-                }, 600);
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            const landingPage = document.getElementById('landing-page');
+            const homePage = document.getElementById('home-page');
 
-            }, 2500); 
+            // 1. Pudarkan Halaman Pembuka
+            landingPage.style.opacity = '0';
+            
+            // 2. Tunggu 1 detik sampai pudar total, lalu sembunyikan dan munculin Halaman Utama
+            setTimeout(() => {
+                landingPage.style.visibility = 'hidden'; // Hilangkan dari klik
+                landingPage.style.display = 'none';      // Hapus dari layar
+                
+                homePage.style.visibility = 'visible';
+                homePage.style.opacity = '1';            // Fade-in Halaman Utama
+            }, 1000); 
         });
     </script>
 
