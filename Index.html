@@ -5,23 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>One Direction Eleven</title>
     <style>
-        /* Reset dasar biar rapi */
-        * {
+        /* =========================================
+           RESET DASAR & ELEMENT UTAMA
+           ========================================= */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            /* Background body utama (gelap luxury) */
-            background-color: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+            background-color: #111;
             color: white;
-            font-family: sans-serif;
-            overflow: hidden; /* Kunci scroll pas loading biar ga bocor */
+            overflow: hidden; /* Kunci scroll biar gak bocor pas loading */
+            min-height: 100vh;
         }
 
         /* =========================================
-           SIHIR LAYAR LOADING (BAJAK LAUT)
+           1. SIHIR LAYAR LOADING (BAJAK LAUT)
            ========================================= */
         #layar-loading {
             position: fixed;
@@ -29,21 +31,20 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            background-color: #111;
+            background-color: #111; /* Hitam pekat misterius */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease-out; /* Animasi fade-out pas ngilang */
+            z-index: 9999; /* Tetap di paling depan sebelum loading kelar */
+            transition: opacity 0.6s ease-out; /* Transisi menghilang yang mulus */
         }
 
-        /* Kunci putarannya di sini */
+        /* Setir kapal raksasa pesanan Komandan */
         .setir-muter {
-            width: 250px;
-            /* Animasi muter 4 detik, kecepatan stabil (linear), tanpa henti (infinite) */
+            width: 250px; /* Sesuai request: Ukuran Raksasa! */
             animation: putarNahkoda 4s linear infinite; 
-            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5)); /* Efek glowing dikit */
+            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.4)); /* Efek aura emas */
         }
 
         @keyframes putarNahkoda {
@@ -51,68 +52,173 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Teks judul loading */
+        /* Teks loading bawah setir */
         .teks-loading {
-            color: #f59e0b; /* Warna emas/oranye ala harta karun */
+            color: #f59e0b; /* Emas bajak laut */
             margin-top: 25px;
-            font-family: 'Courier New', Courier, monospace; /* Font estetik mesin ketik */
+            font-family: 'Courier New', Courier, monospace;
             letter-spacing: 5px;
             font-weight: bold;
-            animation: kedip 1.5s infinite; /* Efek napas */
+            animation: kedip 1.5s infinite;
         }
 
         @keyframes kedip {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.3; }
         }
 
         /* =========================================
-           KONTEN UTAMA WEB (MUNCUL SETELAH LOADING)
+           2. HALAMAN UTAMA (UI PANTAI AT-TAALLUM)
            ========================================= */
-        #konten-utama {
-            display: none; /* Disembunyiin dulu pas awal */
-            text-align: center;
-            padding: 50px 20px;
+        .background-container {
+            /* === PENTING: Pake file gambar kustom lu di sini === */
+            background-image: url('image_3.png'); 
+            background-size: cover;
+            background-position: center;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            opacity: 0; /* Awalnya disembunyiin, nanti di-fade in lewat JS */
+            transition: opacity 0.8s ease-in;
         }
 
-        .judul-konten {
-            color: #f59e0b;
-            margin-bottom: 20px;
+        /* Logo Pojok Kiri Atas */
+        .logo-corner {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            flex-direction: column;
+            color: #d4af37; /* Gold mewah */
+            z-index: 10;
+        }
+
+        .logo-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+        }
+
+        .logo-tagline {
+            font-size: 0.9rem;
+            color: #b59410;
+        }
+
+        /* Wrapper Konten Tengah */
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Kartu Panel Gelap Tengah */
+        .hero-panel {
+            background-color: rgba(0, 0, 0, 0.65); /* Transparan Gelap */
+            backdrop-filter: blur(10px); /* Efek blur di belakang kartu */
+            border-radius: 15px;
+            padding: 4rem;
+            text-align: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 700px;
+            width: 100%;
+            z-index: 5;
+        }
+
+        .hero-panel h4.tagline {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            color: #bbb;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.15em;
+        }
+
+        .hero-panel h1.main-title {
+            font-size: 3.2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-panel p.description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #ddd;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Tombol Transparan Efek Kaca Blur (Glassmorphism) */
+        .hero-panel .blur-btn {
+            background-color: rgba(255, 255, 255, 0.15); /* Putih tipis transparan */
+            backdrop-filter: blur(8px); /* Efek blur internal tombol */
+            -webkit-backdrop-filter: blur(8px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Garis tepi tipis biar tegas */
+            border-radius: 50px;
+            padding: 1.2rem 3.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Efek Interaksi pas Tombol Disentuh/Hover */
+        .hero-panel .blur-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
 
     <div id="layar-loading">
-        <img src="setir-bajak-laut.png" alt="Loading Setir" class="setir-muter">
+        <img src="https://cdn-icons-png.flaticon.com/512/3285/3285498.png" alt="Loading Setir" class="setir-muter">
         <h2 class="teks-loading">ONE DIRECTION ELEVEN</h2>
     </div>
 
-    <div id="konten-utama">
-        <h1 class="judul-konten">Ahlan Wa Sahlan di One Direction Eleven!</h1>
-        <p>Layar loading bajak lautnya udah berhasil dilewatin.</p>
-        <p style="margin-top: 20px; font-style: italic; color: #888;">(Isi konten web lu selanjutnya tinggal ditaruh di dalam div ini)</p>
+    <div class="background-container" id="konten-utama">
+        <div class="logo-corner">
+            <span class="logo-title">ATTAALLUM</span>
+            <span class="logo-tagline">Berbagi Kebaikan, Temukan Kedamaian</span>
+        </div>
+
+        <main class="content-wrapper">
+            <div class="hero-panel">
+                <h4 class="tagline">BERBAGI KEBAIKAN</h4>
+                <h1 class="main-title">PANTAI AT-TAALLUM</h1>
+                <p class="description">Selamat datang di gerbang surga tropis Anda. Temukan ketenangan dan inspirasi di sini bersama tim One Direction Eleven.</p>
+                <button class="blur-btn">DAFTAR SEKARANG</button>
+            </div>
+        </main>
     </div>
 
     <script>
-        // Simulasi nahan loading 2.5 detik biar animasinya puas dilihat audiens
+        // Tunggu sampai seluruh aset (gambar, dll) kelar di-load browser
         window.addEventListener("load", function() {
+            // Kita tahan loading-nya selama 2.5 detik biar animasinya puas dilihat
             setTimeout(function() {
                 let loadingScreen = document.getElementById("layar-loading");
-                let kontenUtama = document.getElementById("konten-utama");
-                let bodyElement = document.body;
+                let mainContent = document.getElementById("konten-utama");
                 
-                // Efek layarnya ngilang pelan-pelan (fade out)
+                // 1. Mulai lenyapkan layar loading (fade out)
                 loadingScreen.style.opacity = "0";
                 
-                // Nunggu setengah detik biar transisinya mulus, baru dihancurin total
+                // 2. Munculkan halaman utama (fade in) secara bersamaan
+                mainContent.style.opacity = "1";
+                
+                // 3. Setelah transisi selesai (0.6 detik), hancurkan display loading biar ga ngegembok layar
                 setTimeout(function() {
                     loadingScreen.style.display = "none";
-                    kontenUtama.style.display = "block"; // Munculin konten asli
-                    bodyElement.style.overflow = "auto"; // Buka gembok scroll-nya
-                }, 500);
+                    document.body.style.overflow = "auto"; // Buka gembok scroll-nya
+                }, 600);
 
-            }, 2500); // 2500 milidetik = 2.5 detik
+            }, 2500); // 2500 ms = 2.5 Detik tayang animasi setir
         });
     </script>
 
